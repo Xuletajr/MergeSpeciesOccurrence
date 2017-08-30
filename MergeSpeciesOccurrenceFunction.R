@@ -241,6 +241,17 @@ MergeSpeciesOccurrence<-function(spp,project)
       ll[ll=='NA'] = NA
       dados[['jabotrb']]$recordedByLastName = ll}
     
+    # kew
+    if(NROW(dados[['kew']])>0){
+      cols = dados[['kew']]$recordedBy
+      #remove pontos
+      cols = gsub("\\.","\\. ",cols)
+      #ll = toupper(as.vector(lapply(cols, pegasobrenomegbif),mode='character'))
+      ll = toupper(as.vector(lapply(cols, pegasobrenomegbif)))
+      #ai pega so o sobrenome
+      ll[ll=='NA'] = NA
+      dados[['kew']]$recordedByLastName = ll}
+    
     
     d=1
     for(d in 1:length(dados)) {

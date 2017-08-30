@@ -69,7 +69,7 @@ save_occurrence_records <- function(dat, file.name, project='',data_source='', s
   {dir.create(data_source)}
   setwd(paste0(getwd(),"/",data_source))
   file_name_txt <- paste0(file.name,".",type.file)  
-  write.table(dat,file_name_txt,append = FALSE, quote = TRUE, sep = sep, eol = "\n", na = "NA", dec = ".", row.names = FALSE, col.names = TRUE, qmethod = "double")
+  write.table(dat,file_name_txt,append = FALSE, quote = TRUE, sep = sep, eol = "\n", na = "NA", dec = ".", row.names = FALSE, col.names = TRUE, qmethod = "double", fileEncoding = "UTF-8")
   setwd(wd.root)
 }
 
