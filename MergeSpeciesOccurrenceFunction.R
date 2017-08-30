@@ -16,49 +16,56 @@ MergeSpeciesOccurrence<-function(spp,project)
     #--- gbif ---#
     file.txt = paste0(dir.datain ,data.set[1],'/',sp,'.txt')
     if(file.exists(file.txt)) {
-      gbif=read.csv(file.txt,sep=' ', dec='.', header=T,as.is=T)  
+      gbif= read.csv(file.txt,sep=' ', dec='.', header=T,as.is=T, encoding="UTF-8")  
       msg(paste(data.set[1], '-' ,NROW(gbif),',', length(colnames(gbif)) ))}
     
     #--- inpa ---#
     file.txt = paste0(dir.datain, data.set[2],'/',sp,'.txt')
-    if(file.exists(file.txt)) {inpa=read.table(file.txt,sep='\t', header=T,as.is=T)
-    msg(paste(data.set[2], '-' ,NROW(inpa),',', length(colnames(inpa)) ))}
+    if(file.exists(file.txt)) {
+      inpa=read.table(file.txt,sep='\t', header=T,as.is=T)
+      msg(paste(data.set[2], '-' ,NROW(inpa),',', length(colnames(inpa)) ))}
     
     #--- jabot ---#
     file.txt = paste0(dir.datain, data.set[3],'/',sp,'.txt')
-    if(file.exists(file.txt)) {jabot=read.csv(file.txt,sep=';', dec='.',header=T,as.is=T)
-    msg(paste(data.set[3], '-' ,NROW(jabot),',', length(colnames(jabot)) ))}
+    if(file.exists(file.txt)) {
+      jabot=read.csv(file.txt,sep=';', dec='.',header=T,as.is=T, encoding="UTF-8")  
+      msg(paste(data.set[3], '-' ,NROW(jabot),',', length(colnames(jabot)) ))}
     
     #--- kew ---#
     file.txt = paste0(dir.datain ,data.set[4],'/',sp,'.txt')
-    if(file.exists(file.txt)) {kew=read.table(file.txt,sep='\t', dec='.',header=T,as.is=T)
-    msg(paste(data.set[4], '-' ,NROW(kew),',', length(colnames(kew)) ))}
+    if(file.exists(file.txt)) {
+      kew=read.table(file.txt,sep='\t', dec='.',header=T,as.is=T, encoding="UTF-8")  
+      msg(paste(data.set[4], '-' ,NROW(kew),',', length(colnames(kew)) ))}
     
     #--- mobot ---#
     file.txt = paste0(dir.datain ,data.set[5],'/',sp,'.txt')
-    if(file.exists(file.txt)) {mobot=read.table(file.txt, sep=' ', header=T,as.is=T)
-    msg(paste(data.set[5], '-' ,NROW(mobot),',', length(colnames(mobot)) ))}
+    if(file.exists(file.txt)) {
+      mobot=read.table(file.txt, sep=' ', header=T,as.is=T, encoding="UTF-8")  
+      msg(paste(data.set[5], '-' ,NROW(mobot),',', length(colnames(mobot)) ))}
     
     #--- mydataset ---#
     file.txt = paste0(dir.datain ,data.set[6],'/',sp,'.txt')
-    if(file.exists(file.txt)) {mydataset=read.table(file.txt,sep='\t', header=T,as.is=T)
-    msg(paste(data.set[6], '-' ,NROW(mydataset),',', length(colnames(mydataset)) ))}
+    if(file.exists(file.txt)) {
+      mydataset=read.table(file.txt,sep='\t', header=T,as.is=T, encoding="UTF-8")  
+      msg(paste(data.set[6], '-' ,NROW(mydataset),',', length(colnames(mydataset)) ))}
     
     #--- nybg ---#
     file.txt = paste0(dir.datain ,data.set[7],'/',sp,'.csv')
-    if(file.exists(file.txt)) {nybg=read.table(file.txt,sep=',', header=T,as.is=T)
-    msg(paste(data.set[7], '-' ,NROW(nybg),',', length(colnames(nybg)) ))}
+    if(file.exists(file.txt)) {
+      nybg=read.table(file.txt,sep=',', header=T,as.is=T, encoding="UTF-8")  
+      msg(paste(data.set[7], '-' ,NROW(nybg),',', length(colnames(nybg)) ))}
     
     #--- splink ---#
     file.txt = paste0(dir.datain ,data.set[8],'/',sp,'.txt')
-    if(file.exists(file.txt)) {splink=read.csv(file.txt, dec='.',sep='\t', header = TRUE)
-    msg(paste(data.set[8], '-' ,NROW(splink),',', length(colnames(splink)) ))}
+    if(file.exists(file.txt)) {
+      splink=read.csv(file.txt, dec='.',sep='\t', header = TRUE, encoding="UTF-8")  
+      msg(paste(data.set[8], '-' ,NROW(splink),',', length(colnames(splink)) ))}
     
     #--- jabotbr---#
     file.txt = paste0(dir.datain ,data.set[9],'/',sp,'.txt')
-    if(file.exists(file.txt)) 
-    {jabotrb=read.csv(file.txt, dec='.',sep=' ', header = TRUE)
-    msg(paste(data.set[9], '-' ,NROW(jabotrb),',', length(colnames(jabotrb)) ))}
+    if(file.exists(file.txt)) {
+      jabotrb=read.csv(file.txt, dec='.',sep=' ', header = TRUE, encoding="UTF-8")  
+      msg(paste(data.set[9], '-' ,NROW(jabotrb),',', length(colnames(jabotrb)) ))}
     
     #--- bien ---#
     
