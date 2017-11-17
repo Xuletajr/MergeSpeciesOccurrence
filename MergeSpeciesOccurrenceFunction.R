@@ -16,60 +16,91 @@ MergeSpeciesOccurrence<-function(spp,project)
     #--- gbif ---#
     file.txt = paste0(dir.datain ,data.set[1],'/',sp,'.txt')
     if(file.exists(file.txt)) {
-      gbif= read.csv(file.txt,sep=' ', dec='.', header=T,as.is=T, encoding="UTF-8")  
+      gbif= read.csv(file.txt,sep='\t', dec='.', header=T,as.is=T, encoding="UTF-8")  
+      #gbif= fread(file.txt, encoding="UTF-8")  
       msg(paste(data.set[1], '-' ,NROW(gbif),',', length(colnames(gbif)) ))}
     
     #--- inpa ---#
     file.txt = paste0(dir.datain, data.set[2],'/',sp,'.txt')
     if(file.exists(file.txt)) {
       inpa=read.table(file.txt,sep='\t', header=T,as.is=T)
+      #inpa=fread(file.txt, encoding="UTF-8")
       msg(paste(data.set[2], '-' ,NROW(inpa),',', length(colnames(inpa)) ))}
     
     #--- jabot ---#
     file.txt = paste0(dir.datain, data.set[3],'/',sp,'.txt')
     if(file.exists(file.txt)) {
       jabot=read.csv(file.txt,sep=';', dec='.',header=T,as.is=T, encoding="UTF-8")  
+      #jabot= fread(file.txt, encoding="UTF-8")  
       msg(paste(data.set[3], '-' ,NROW(jabot),',', length(colnames(jabot)) ))}
     
     #--- kew ---#
     file.txt = paste0(dir.datain ,data.set[4],'/',sp,'.txt')
     if(file.exists(file.txt)) {
       kew=read.table(file.txt,sep='\t', dec='.',header=T,as.is=T, encoding="UTF-8")  
+      #kew= fread(file.txt, encoding="UTF-8")  
       msg(paste(data.set[4], '-' ,NROW(kew),',', length(colnames(kew)) ))}
     
     #--- mobot ---#
     file.txt = paste0(dir.datain ,data.set[5],'/',sp,'.txt')
     if(file.exists(file.txt)) {
       mobot=read.table(file.txt, sep=' ', header=T,as.is=T, encoding="UTF-8")  
+      #mobot= fread(file.txt, encoding="UTF-8")  
       msg(paste(data.set[5], '-' ,NROW(mobot),',', length(colnames(mobot)) ))}
     
     #--- mydataset ---#
     file.txt = paste0(dir.datain ,data.set[6],'/',sp,'.txt')
     if(file.exists(file.txt)) {
       mydataset=read.table(file.txt,sep='\t', header=T,as.is=T, encoding="UTF-8")  
+      #mydataset = fread(file.txt, encoding="UTF-8")  
       msg(paste(data.set[6], '-' ,NROW(mydataset),',', length(colnames(mydataset)) ))}
     
     #--- nybg ---#
     file.txt = paste0(dir.datain ,data.set[7],'/',sp,'.csv')
     if(file.exists(file.txt)) {
       nybg=read.table(file.txt,sep=',', header=T,as.is=T, encoding="UTF-8")  
+      #ntbg = fread(file.txt, encoding="UTF-8")  
       msg(paste(data.set[7], '-' ,NROW(nybg),',', length(colnames(nybg)) ))}
     
     #--- splink ---#
     file.txt = paste0(dir.datain ,data.set[8],'/',sp,'.txt')
     if(file.exists(file.txt)) {
       splink=read.csv(file.txt, dec='.',sep='\t', header = TRUE, encoding="UTF-8")  
-      msg(paste(data.set[8], '-' ,NROW(splink),',', length(colnames(splink)) ))}
+      # #splink = fread(file=file.txt, nrows=-1, header = T); colnames(splink) 
+      # # carregando todas as coordenadas
+      # splink.ori <- splink[splink$latitude != 0 & splink$longitude != 0, ]
+      # splink.mun <- splink[splink$latitude_mun != 0 & splink$longitude_mun != 0, ]
+      # splink.mun$latitude = splink.mun$latitude_mun
+      # splink.mun$longitude = splink.mun$longitude_mun
+      # 
+      # splink <- rbind(splink.mun,splink.ori)
+      # 
+      # msg(paste(data.set[8], ' orig. -' ,NROW(splink.ori),',', length(colnames(splink.ori)) ))
+      # msg(paste(data.set[8], ' atrib. -' ,NROW(splink.mun),',', length(colnames(splink.mun)) ))
+      msg(paste(data.set[8], ' total -' ,NROW(splink),',', length(colnames(splink)) ))
+
+      }
     
     #--- jabotbr---#
     file.txt = paste0(dir.datain ,data.set[9],'/',sp,'.txt')
     if(file.exists(file.txt)) {
-      jabotrb=read.csv(file.txt, dec='.',sep=' ', header = TRUE, encoding="UTF-8")  
+      jabotrb=read.csv(file.txt, dec='.',sep='\t', header = TRUE, encoding="UTF-8")  
+      #jabotrb= fread(file.txt, encoding="UTF-8")  
       msg(paste(data.set[9], '-' ,NROW(jabotrb),',', length(colnames(jabotrb)) ))}
     
     #--- bien ---#
+    file.txt = paste0(dir.datain ,data.set[10],'/',sp,'.txt')
+    if(file.exists(file.txt)) {
+      bien=read.csv(file.txt, dec='.',sep='\t', header = TRUE, encoding="UTF-8")  
+      #bien = fread(file.txt, encoding="UTF-8")  
+      msg(paste(data.set[10], '-' ,NROW(bien),',', length(colnames(bien)) ))}
     
     #--- sisbbr ---#
+    file.txt = paste0(dir.datain ,data.set[11],'/',sp,'.txt')
+    if(file.exists(file.txt)) {
+      sisbbr=read.csv(file.txt, dec='.',sep='\t', header = TRUE, encoding="UTF-8")  
+      #sisbbr = fread(file.txt, encoding="UTF-8")  
+      msg(paste(data.set[11], '-' ,NROW(sisbbr),',', length(colnames(sisbbr)) ))}
     
     #--- spocc---#
     
@@ -84,19 +115,24 @@ MergeSpeciesOccurrence<-function(spp,project)
     if(NROW(nybg)>0)      {dados=append(dados,list(nybg=nybg))}
     if(NROW(splink)>0)    {dados=append(dados,list(splink=splink))}
     if(NROW(jabotrb)>0)  {dados=append(dados,list(jabotrb=jabotrb))}
+
+    if(NROW(bien)>0)  {dados=append(dados,list(bien=bien))}
+    if(NROW(sisbbr)>0)  {dados=append(dados,list(sisbbr=sisbbr))}
     
     if(length(dados)==0) {next}
     
+    msg('Padronizando colunas...')
     #--- Padriniza c ---#
     nomescl <- read.table("NomesColunasTDWG.csv",sep=";",header=T,as.is=T)
-    d=1
-    for(d in 1:length(dados)) {
+    d=4
+    for(d in 1:length(dados)) 
+    {
       if(NROW(dados[[d]])>0){
         dad = dados[[d]]
         cl = colnames(dad)
         repositorio = names(dados)[d]
-        vl = nomescl$COLUNANOME%in%cl & nomescl$REPOSITORIO==repositorio & nomescl$INTERESSA==1
-        sum(vl)
+        vl = nomescl$COLUNANOME%in%cl & nomescl$source==repositorio & nomescl$INTERESSA==1
+        #sum(vl)
         novonomecoluna = nomescl[vl,'NOVONOME']
         nomeoriginal = nomescl[vl,'COLUNANOME']
         if (length(unique(novonomecoluna))!=length(novonomecoluna)) {
@@ -119,16 +155,17 @@ MergeSpeciesOccurrence<-function(spp,project)
       } 
     }
     
-    #--- Limpa c ---#
+    #- Limpa c ---#
     d=1
-    for(d in 1:length(dados)){
+    for(d in 1:length(dados))
+    {
       dad = dados[[d]]
       for(cl in 1:ncol(dad)){
         dad[,cl] = limpacolunas(dad[,cl])
       }
       dados[[d]] = dad
     }
-    
+
     
     #--- Acertar datas de coleta e determinacao ---#
     
@@ -154,6 +191,7 @@ MergeSpeciesOccurrence<-function(spp,project)
     #--- mobot ---#
     # data coleta - dividir em dia, mes e ano 
     # data determinação - não tem
+
     if(NROW(dados[['mobot']])>0){dados[['mobot']]= acertadata(dados[['mobot']],field='verbatimEventDate')}  
     
     #--- mydataset ---#
@@ -171,8 +209,14 @@ MergeSpeciesOccurrence<-function(spp,project)
     # data coleta e determinação já vêm divididas em dia, mes e ano 
     
     #--- bien ---#
+    # data coleta - dividir em dia, mes e ano
+    if(NROW(dados[['bien']])>0){dados[['bien']] = acertadata(dados[['bien']], field = 'eventDate')}  
+
+    if(NROW(dados[['bien']])>0)
+    {dados[['bien']]= acertadata(dados[['bien']],'dateIdentified')}
     
     #--- sisbbr ---#
+    if(NROW(dados[['sisbbr']])>0){dados[['sisbbr']] = acertadata(dados[['sisbbr']], field = 'eventDate')}  
     
     #--- spocc---#
     
@@ -258,12 +302,31 @@ MergeSpeciesOccurrence<-function(spp,project)
       #ai pega so o sobrenome
       ll[ll=='NA'] = NA
       dados[['kew']]$recordedByLastName = ll}
+
+    if(NROW(dados[['bien']])>0){
+      cols = dados[['bien']]$recordedBy
+      #remove pontos
+      cols = gsub("\\.","\\. ",cols)
+      #ll = toupper(as.vector(lapply(cols, pegasobrenomegbif),mode='character'))
+      ll = toupper(as.vector(lapply(cols, pegasobrenomegbif)))
+      #ai pega so o sobrenome
+      ll[ll=='NA'] = NA
+      dados[['bien']]$recordedByLastName = ll}
     
-    
+    if(NROW(dados[['sisbbr']])>0){
+      cols = dados[['sisbbr']]$recordedBy
+      #remove pontos
+      cols = gsub("\\.","\\. ",cols)
+      #ll = toupper(as.vector(lapply(cols, pegasobrenomegbif),mode='character'))
+      ll = toupper(as.vector(lapply(cols, pegasobrenomegbif)))
+      #ai pega so o sobrenome
+      ll[ll=='NA'] = NA
+      dados[['sisbbr']]$recordedByLastName = ll}
+
     d=1
     for(d in 1:length(dados)) {
-      dados[[d]]$NOMECIENTIFICO_VALIDO=sp
-      dados[[d]]$REPOSITORIO= names(dados)[d]
+      dados[[d]]$scientificNameKey=sp
+      dados[[d]]$source= names(dados)[d]
     }  
     
     spp.dados=append(spp.dados,list(ds=dados))
@@ -287,8 +350,20 @@ compilacoletores<-function(alldata)
     oscoletores = rbind(oscoletores,di)}
   oscoletores = unique(oscoletores)
   oscoletores = oscoletores[order(oscoletores$recordedByLastName),]
+  
+  
   #oscoletores$NOVOCOLETORNOME = oscoletores[,c("SOBRENOME")]
-  oscoletores$recordedByStandardized = oscoletores$recordedByLastName
+  
+  oscoletores$recordedByStandardized = rep(NA, NROW(oscoletores))
+  oscoletores$recordedByID = (1:NROW(oscoletores))
+  
+  for (c in 1: NROW(oscoletores))
+  {
+    oscoletores$recordedByStandardized[c] = oscoletores$recordedByLastName[c]
+  }
+  
+#  oscoletores$recordedByStandardized = oscoletores$recordedByLastName
+ 
   #oscoletores$CAIXAALTA = toupper(oscoletores[,"COLETORNOME"])
   return(oscoletores)
 }
@@ -303,7 +378,7 @@ juncao<-function(spp.list)
     nvdados = spp.list[[n.sp]]
     for (n in 1:length(nvdados)) {
       dad = nvdados[[n]]
-      dad$REPOSITORIO = rep(names(nvdados)[n],nrow(dad))
+      dad$source = rep(names(nvdados)[n],nrow(dad))
       cls = c(cls, colnames(dad))
       nvdados[[n]] = dad
       rns = nrow(dad)+rns

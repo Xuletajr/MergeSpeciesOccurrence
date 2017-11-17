@@ -141,8 +141,8 @@ datagbif <- function(sp_search=NULL, remove.badissues=TRUE, limite=0, dgbif=data
     
     dat.full <- dat.full.in <- datain <- {}
     
-    sp.name <- as.character(sp_search[s,1])
-    #sp.name <- as.character(sp_search[s])
+    #sp.name <- as.character(sp_search[s,1])
+    sp.name <- as.character(sp_search[s])
     speciesKey <- name_backbone(name=sp.name)$speciesKey
     
     if (limite==0){

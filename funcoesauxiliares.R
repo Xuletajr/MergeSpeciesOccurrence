@@ -7,7 +7,16 @@
 ###---------------------------------------------------------------------###
 
 if(!require(pacman)) install.packages("pacman")
-pacman::p_load(maptools, sp, maps, svDialogs, rgeos, rJava, data.table, lettercase, stringi,rgdal, stringr, rgbif, flora, RB, dplyr,BIEN)
+pacman::p_load(maptools, sp, maps, svDialogs, rgeos, data.table, lettercase, stringi,rgdal, stringr, rgbif, flora, dplyr,BIEN)
+library(finch)
+library(RB)
+
+# if(!require(pacman)) install.packages("pacman")
+# pacman::p_load(maptools, sp, maps, svDialogs, rgeos, rJava, data.table, lettercase, stringi,rgdal, stringr, rgbif, flora, dplyr,BIEN,finch,RB)
+
+# Install RB:
+# devtools::install_github("gustavobio/finch",force = TRUE)
+# devtools::install_github("gustavobio/RB",force = TRUE)
 
 ###---------------------------------------------------------------------###
 
@@ -36,25 +45,7 @@ criarapastas<-function(data.source,project){
 
 ###---------------------------------------------------------------------###
 
-# nome aceito e sinonimos conforme pacote flora
-
-# return_type  = 'names','names_synonyms','synonyms'
-
-load('D:\\R\\flora\\flora-master\\R\\sysdata.rda')
-
-nomes_sinonimos_florabr <- function(sp_name_search,return_type='names'){
-  names_florabr = get.taxa(sp_name_search)
-  names <- data.frame(name=names_florabr$search.str, stringsAsFactors = F)
-  synanyms <- data.frame(name=all.taxa$search.str[all.taxa$id %in% relationships$related.id[relationships$id %in% names_florabr$id]], stringsAsFactors = F)
-  
-  names_synonyms <- as.vector(rbind(names,synanyms))
-  if (return_type == 'names'){return(names)}
-  if (return_type == 'synonyms'){return(synanyms)}
-  if (return_type == 'names_synonyms'){return(names_synonyms)}
-}
-
 # salva dados no diretorio de cada fonte de dados por projeto
-
 save_occurrence_records <- function(dat, file.name, project='',data_source='', sep=' ',type.file='txt')
 {
   ## Grava resultados totais da busca por registros
@@ -73,15 +64,16 @@ save_occurrence_records <- function(dat, file.name, project='',data_source='', s
   setwd(wd.root)
 }
 
+separa<-function(x,sep=',')
+{return(ifelse(x!='',paste0(sep,' ',x),''))}
 
-# ###---------------------------------------------------------------------###
-# limpaNA<-function(x)
-# {
-#   if(is.na(x)){x<-''}
-#   x<-gsub('NA','',x)
-#   return(x)}
 
-# ###---------------------------------------------------------------------###
+limpaNA<-function(x)
+{
+  if(is.na(x)){x<-''}
+  x<-gsub('NA','',x)
+  return(x)}
+
 
 # LongLatToUTM<-function(x,y,zone){
 #   xy <- data.frame(ID = 1:length(x), X = x, Y = y)

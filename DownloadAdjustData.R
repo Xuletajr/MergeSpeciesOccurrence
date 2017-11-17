@@ -12,17 +12,29 @@
 
 ###---------------------------------------------------------------------###
 
-rm(list = ls()) #; gc()
-memory.limit(size = 4e3) 
-#encoding sessionInfo()
+# 1. clear the memory and load the packages
+# clear workspace and increase memory
+rm(list = ls())
+memory.limit(size = 1.75e13)
+
+###---------------------------------------------------------------------###
+
+# diretório temporario de processamento do R
+
+tempdir <- function() "D:\\temps"
+unlockBinding("tempdir", baseenv())
+assignInNamespace("tempdir", tempdir, ns="base", envir=baseenv())
+assign("tempdir", tempdir, baseenv())
+lockBinding("tempdir", baseenv())
+tempdir()
 
 ###---------------------------------------------------------------------###
 
 # Informar parâmetros:
 
-project = "plantascalcario"
-dir.root= "D:/GitHub/MergeSpeciesOccurrence"; setwd(dir.root)
-file.spp = "plantascalcario.txt"
+project = "plantascalcario-off"
+dir.root= "c:/Dados/GitHub/MergeSpeciesOccurrence"; setwd(dir.root)
+file.spp = "plantascalcario2.txt"
 
 ###---------------------------------------------------------------------###
 
@@ -30,27 +42,46 @@ file.spp = "plantascalcario.txt"
 
 source("funcoesauxiliares.R")
 source("DownloadAdjustDataFunctoin.R")
+setwd(dir.root)
 source("par.ini.R")
+setwd(dir.root)
 
 ###---------------------------------------------------------------------###
 
 # carrega lista de espécies  
 
-spp.csv <- read.table(file.spp, header=FALSE, sep="\t",dec = ".") 
-spp <- as.matrix(spp.csv[ ,1])
+spp <- read.table(file.spp, header=F, sep="\t",dec = ".") 
 
 ###---------------------------------------------------------------------###
 
 # baixa utilizando o pacote rgbif
  
-DownloadData(species.list = spp, project.name = project, data.source = "gbif", base.synonyms= 'FLORABRASIL2020',include.synonyms = T,  override.result.file = F)  
+DownloadData(species.list = spp, project.name = project, data.source = "gbif", base.synonyms= 'FLORABRASIL2020', include.synonyms = T,  override.result.file = F)  
 
+###---------------------------------------------------------------------###
+
+# selecionar splink
+
+DownloadData(species.list = spp, project.name = project, data.source = "splink", base.synonyms= 'FLORABRASIL2020', include.synonyms = T,  override.result.file = T)  
 
 ###---------------------------------------------------------------------###
 
 # baixa utilizando o pacote jabotRB
 
-DownloadData(species.list=spp,project.name=project,data.source='jabotrb',include.synonyms=TRUE, base.synonyms='FLORABRASIL2020', override.result.file=FALSE)
+DownloadData(species.list=spp,project.name=project,data.source='jabotrb',include.synonyms=T, base.synonyms='FLORABRASIL2020', override.result.file=T)
+
+
+###---------------------------------------------------------------------###
+
+# baixa utilizando o pacote BIEN
+
+DownloadData(species.list=spp,project.name=project,data.source='bien',include.synonyms=T, base.synonyms='FLORABRASIL2020', override.result.file=T)
+
+###---------------------------------------------------------------------###
+
+# baixa utilizando o pacote sisbbr
+
+DownloadData(species.list=spp,project.name=project,data.source='sisbbr',include.synonyms=T, base.synonyms='FLORABRASIL2020', override.result.file=T)
 
 ###---------------------------------------------------------------------###
 
@@ -58,7 +89,7 @@ DownloadData(species.list=spp,project.name=project,data.source='jabotrb',include
 # para salvar imagens (save.image = T), criar pasta image em Kew
 # sinônimos (include.synonyms = T) ainda não implementado 
  
-DownloadData(species.list=spp,project.name=project,data.source='kew',save.image = F)  
+DownloadData(species.list=spp,project.name=project,data.source='kew',save.image = F,include.synonyms=F, override.result.file=F)  
 
 
 ###---------------------------------------------------------------------###

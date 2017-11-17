@@ -1,4 +1,4 @@
-# pacman::p_load(rvest, data.table, stringr, dplyr, downloader)
+ pacman::p_load(rvest, data.table, stringr, dplyr, downloader)
 # 
 # dir.root <- "T:/GitHub/OccSpp"
 # setwd(dir.root)
@@ -17,6 +17,27 @@
 ##################################################################################
 
 # http://apps.kew.org/herbcat/gotoSearchPage.do (All names) Baixar pagina htm resultado da busca. Dica: Records per page = 100 depois alterar resultsPerPage=100000 na barra de nagegacao. Isso exibe totos dos resultados.
+
+# myapikey 
+# myapikey='dfcbbc17-13eb-4349-ad6a-3e20b7c68f6a' 
+
+# prefix 
+# http.prefix = 'http://services.tropicos.org/'
+ 
+# idkew
+ 
+#Name/25509881/Specimens?apikey=dfcbbc17-13eb-4349-ad6a-3e20b7c68f6a&format=xml 
+ 
+# search
+# Name/Search?name=poa annua&type=wildcard&apikey=D1CC4285-279D-4B5C-B469-861F4C1F4020&format=xml 
+
+# name.search = 'Peperomia gardneriana' 
+# 
+# http.search = paste0(http.prefix,'Name/Search?name=',name.search,'&type=wildcard&apikey=',myapikey,'&format=xml')  
+# read_html(url)
+# 
+# url <- 'services.tropicos.org/Name/Search?'
+# x <- GET(url, add_headers('name' = name.search,'type' = 'wildcard', 'apikey' = myapikey))
 
 
 datakew <- function(sp_search=NULL, project='', data.source='kew', save.data=F,save.image=F )
