@@ -1,141 +1,54 @@
 ### baixa dados gbif  ###
 
 # Pablo Hendrigo Alves de Melo - pablopains@yahoo.com.br
+# Adaptação da função José W. Ribeiro Jr.
 
 ###  datagbif	###
 
 ###---------------------------------------------------------------------###
 
-# utiliza pacote rgbif, fun��o occ_seach,  busca em scientificName
-# concatena resultados de buscas nomes v�lidos e sin�nimos de uma mesma esp�cie 
-# permite ajustar pra utilizar difrentes fontes de sin�nimos
-# for�a retorno de todas as culunas gbif, com ou sem informa��o
+# utiliza pacote rgbif, função occ_seach,  busca em scientificName
+# concatena resultados de buscas nomes válidos e sinônimos de uma mesma espécie 
+# permite ajustar pra utilizar difrentes fontes de sinônimos
+# força retorno de todas as culunas gbif, com ou sem informação
 
 ###---------------------------------------------------------------------###
 
-datagbif <- function(sp_search=NULL, remove.badissues=TRUE, limite=0, dgbif=data.frame(
-  accessRights=NA,
-  associatedReferences=NA,
-  associatedSequences=NA,
-  basisOfRecord=NA,
-  behavior=NA,
-  bibliographicCitation=NA,
-  catalogNumber=NA,
-  class=NA,
-  classKey=NA,
-  collectionCode=NA,
-  collectionID=NA,
-  continent=NA,
-  coordinateAccuracy=NA,
-  countryCode=NA,
-  county=NA,
-  datasetID=NA,
-  datasetKey=NA,
-  datasetName=NA,
-  dateIdentified=NA,
-  day=NA,
-  decimalLatitude=NA,
-  decimalLongitude=NA,
-  depth=NA,
-  depthAccuracy=NA,
-  disposition=NA,
-  dynamicProperties=NA,
-  elevation=NA,
-  elevationAccuracy=NA,
-  endDayOfYear=NA,
-  eventDate=NA,
-  eventRemarks=NA,
-  eventTime=NA,
-  family=NA,
-  familyKey=NA,
-  fieldNotes=NA,
-  fieldNumber=NA,
-  gbifID=NA,
-  genericName=NA,
-  genus=NA,
-  genusKey=NA,
-  georeferencedBy=NA,
-  georeferencedDate=NA,
-  georeferenceProtocol=NA,
-  georeferenceRemarks=NA,
-  georeferenceVerificationStatus=NA,
-  habitat=NA,
-  hasCoordinate=NA,
-  hasGeospatialIssues=NA,
-  higherClassification=NA,
-  higherGeography=NA,
-  identificationQualifier=NA,
-  identificationRemarks=NA,
-  identificationVerificationStatus=NA,
-  identifiedBy=NA,
-  identifier=NA,
-  individualID=NA,
-  informationWithheld=NA,
-  infraspecificEpithet=NA,
-  institutionCode=NA,
-  institutionID=NA,
-  island=NA,
-  islandGroup=NA,
-  issue=NA,
-  kingdom=NA,
-  kingdomKey=NA,
-  language=NA,
-  lastCrawled=NA,
-  lastInterpreted=NA,
-  lastParsed=NA,
-  locality=NA,
-  locationAccordingTo=NA,
-  locationRemarks=NA,
-  materialSampleID=NA,
-  mediaType=NA,
-  modified=NA,
-  month=NA,
-  municipality=NA,
-  nameAccordingTo=NA,
-  nomenclaturalCode=NA,
-  occurrenceID=NA,
-  occurrenceRemarks=NA,
-  occurrenceStatus=NA,
-  order=NA,
-  orderKey=NA,
-  otherCatalogNumbers=NA,
-  ownerInstitutionCode=NA,
-  phylum=NA,
-  phylumKey=NA,
-  preparations=NA,
-  previousIdentifications=NA,
-  protocol=NA,
-  publishingCountry=NA,
-  recordedBy=NA,
-  recordNumber=NA,
-  references=NA,
-  reproductiveCondition=NA,
-  rights=NA,
-  rightsHolder=NA,
-  samplingProtocol=NA,
-  scientificName=NA,
-  source=NA,
-  species=NA,
-  speciesKey=NA,
-  specificEpithet=NA,
-  startDayOfYear=NA,
-  stateProvince=NA,
-  taxonKey=NA,
-  taxonomicStatus=NA,
-  taxonRank=NA,
-  taxonRemarks=NA,
-  type=NA,
-  typeStatus=NA,
-  typifiedName=NA,
-  verbatimCoordinateSystem=NA,
-  verbatimElevation=NA,
-  verbatimEventDate=NA,
-  verbatimLocality=NA,
-  verbatimSRS=NA,
-  verbatimTaxonRank=NA,
-  vernacularName=NA,
-  waterBody=NA,
-  year=NA
+datagbif <- function(sp_search = NULL, remove.badissues = TRUE, limite = 0, dgbif = data.frame(
+  # Reestruturei o data frame para o formato de trabalho do CNCFlora, este é o formato de entrada no sistema de avaliação do Centro.
+  # Poderia ter deixado a estrutura original e filtrado posteriormente, mas como tive que fazer outras alterações na função já fiz esta também.
+  modified = NA, 
+  institutionCode = NA, 
+  collectionCode = NA, 
+  catalogNumber= NA, 
+  scientificName = NA, 
+  identificationQualifier = NA, 
+  family = NA, 
+  genus = NA, 
+  specificEpithet = NA,
+  infraspecificEpithet = NA, 
+  scientificNameAuthorship = NA,
+  identifiedBy = NA, 
+  dateIdentified = NA, 
+  typeStatus = NA,
+  recordNumber = NA, 
+  fieldNumber = NA, 
+  recordedBy = NA,
+  year = NA, 
+  month = NA,
+  day = NA, 
+  country = NA, 
+  stateProvince = NA, 
+  municipality = NA,
+  locality = NA,
+  decimalLatitude = NA, 
+  decimalLongitude = NA, 
+  occurrenceRemarks = NA,
+  acceptedNameUsage = NA, 
+  occurrenceID = NA, 
+  comments = NA, 
+  bibliographicCitation = NA
+  
 )){
   for (s in 1:NROW(sp_search)){
     
@@ -143,17 +56,22 @@ datagbif <- function(sp_search=NULL, remove.badissues=TRUE, limite=0, dgbif=data
     
     #sp.name <- as.character(sp_search[s,1])
     sp.name <- as.character(sp_search[s])
-    speciesKey <- name_backbone(name=sp.name)$speciesKey
+    # Alterei de 'speciesKey' por 'usageKey'. Não foi encontrado metadados para o significado de cada chave do GBIF Backbone Taxonomy,
+    # mas tivemos problemas com as ocorrências utilizando 'speciesKey', pois muitas vezes baixava ocorrências de sinônimos e não da 
+    # espécie de interesse. Fizemos alguns testes com 'usageKey' e nos pareceu mais consistente com as espécies alvos. 
+    speciesKey <- name_backbone(name=sp.name)$usageKey
     
     if (limite==0){
-      if (length(speciesKey)>0){n.occ <- occ_count(speciesKey,basisOfRecord = 'PRESERVED_SPECIMEN')}
+      if (length(speciesKey)>0){n.occ <- occ_count(speciesKey, basisOfRecord = 'PRESERVED_SPECIMEN')}
       else{n.occ <- 10}}
     else{n.occ <-limite}
     
     cat(' -> ',sp.name,' [key gbif ',speciesKey,'(',n.occ,') ]')
     
     # busca registros 
-    dat.full <- occ_search( scientificName = sp.name, limit = n.occ, basisOfRecord = 'PRESERVED_SPECIMEN')
+    # Alterei para procurar a ocorrência utilizando 'speciesKey' ao invés do nome da espécie. Pareceu ser mais consistente a busca de 
+    # de ocorrências com a 'speciesKey'. 
+    dat.full <- occ_search(taxonKey = speciesKey, limit = n.occ, basisOfRecord = 'PRESERVED_SPECIMEN')
     
 
     # dat.spocc <- occ(query = sp.name, from = source.data,limit = n.occ)
